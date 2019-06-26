@@ -54,7 +54,7 @@ class MainController extends Controller {
     }
 
     /********************************************************
-     Purpose: All Categories list  with correspoding products along with pagination
+     Purpose: All Categories list  with correspoding products (no. of products too) along with pagination
      Parameter:
         {
          content-type : "application/json",
@@ -106,7 +106,7 @@ class MainController extends Controller {
                         "as": "products"
                     }
                 },
-                { $project: { "products": 1, "category": 1, "createdAt": 1 } }
+                { $project: { "category": 1, "createdAt": 1, "totalProducts": { $size: "$products" }, "products": 1, } }
             ])
             let total = await CategoryInfo.count(mainQuery)
             let nextPage = await CF.getNextPage(page, limit, total);
